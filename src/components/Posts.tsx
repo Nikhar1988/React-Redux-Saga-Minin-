@@ -4,21 +4,26 @@ import { InitialStateType } from "../type/typePost"
 import Post from "./Post"
 
 
-type PostsType = {
-    posts:number[]
-}
+ 
 
-const Posts:React.FC<PostsType> =({posts}) => {
-    if (!posts.length) {
+const Posts:React.FC =({syncPost}:any) => {
+    
+    if (!syncPost.length) {
         return <p className="text-center">Постов пока нет</p>
     }
     return <div>
-                {posts.map(post => <Post post={post} key={post}/>)}
+                {syncPost.map((post:any) => <Post post={post.title} key={post.id}/>)}
             </div>   
 } 
 
 const mapStateToProps = (state:InitialStateType) => {
-    console.log(state)
-    return state
+    
+    return  {
+        syncPost:state.posts.posts
+    } 
 }
+
+
+
+
 export default connect(mapStateToProps, null)(Posts)

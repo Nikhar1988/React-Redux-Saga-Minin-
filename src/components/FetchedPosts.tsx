@@ -1,16 +1,25 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPost } from "../redux/actions/createPost";
+import { Loader } from "./Loader";
 import Post from "./Post";
 
-type PropsType={
-    posts:Array<any>
-}
 
- const FetchedPosts: React.FC<PropsType> = ({posts}):JSX.Element  => {
-    if (!posts.length) {
-        return <button className="btn btn-primary">Загрузить</button>
+
+ const FetchedPosts: React.FC = ({posts}:any):JSX.Element  => {
+    const dispatch = useDispatch()
+    const {FetchedPosts, loader} = useSelector((state:any) => state.posts)
+    if (loader) {
+        return <Loader/> 
+    }
+    if (!FetchedPosts.length) {
+        return <button 
+        className="btn btn-primary"
+        onClick={fetchPost(dispatch)}
+        >Загрузить</button>
     }
     return <>
-             {posts.map(post => <Post post={post} key={post}/>)}
+             {FetchedPosts.map((post:any) => <Post post={post.title} key={post.id}/>)}
         </>
             
 }
